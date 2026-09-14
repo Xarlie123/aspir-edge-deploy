@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.venv/
+
+# Per-experiment inputs are linked in from aspir-edge-data (scripts/link_data.sh).
+models/*/source
+
+# Quantiser scratch, other than the recorded fixed points.
+models/*/phase_c_dpu/quantizer_scratch/*
+!models/*/phase_c_dpu/quantizer_scratch/quant_info.json
+
+# AMD DPU IP source, fetched by hardware/dpu_overlay/fetch-dpu-trd.sh, and
+# Vivado build products.
+hardware/dpu-trd/
+hardware/build/
+
+# Regenerated figures and tables.
+figures/output/
+figures/data/
