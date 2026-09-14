@@ -32,9 +32,11 @@ that are specific to this work:
 
 | Path | What it does |
 |---|---|
+| `meta-user/recipes-vitis-ai/` | Vitis AI 3.0 runtime recipes: `xir`, `unilog` (with a Python-path patch for PetaLinux), `target-factory`, `vart` and `vitis-ai-library` |
+| `meta-user/recipes-vai-kernel/` | An additional kernel configuration fragment (`bsp.cfg`) for `linux-xlnx` |
 | `meta-user/recipes-vitis-ai-route-c/vart/vart_3.0.bbappend` | Builds VART 3.0 for the vivado flow (`PACKAGECONFIG:remove = "vitis"`), so it talks to `/dev/dpu` instead of XRT |
 | `meta-user/recipes-kernel/linux/linux-xlnx/route-c.cfg` | Kernel options: the DPU driver (`CONFIG_XILINX_DPU`), FPGA manager and overlays, the USB PHY options the DPU driver's dependencies otherwise disable, UIO |
-| `meta-user/recipes-bsp/device-tree/` | Device-tree fragments |
+| `meta-user/recipes-bsp/` | Device-tree fragments and U-Boot configuration |
 | `meta-user/recipes-core/images/petalinux-image-minimal.bbappend` | Installs `aspir-load-dpu` and `aspir-unload-dpu`, the udev rule for `/dev/dpu`, the runtime environment and the `PATH` used by non-interactive SSH |
 | `configs/` | PetaLinux `config` and `rootfs_config`, and small service configuration files |
 
