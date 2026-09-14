@@ -1,0 +1,30 @@
+{
+  "name": "e5_frame_budget",
+  "description": "E5 - linear reconstruction timing on the Arm cores, once per (family, ratio). The estimator follows the pattern polarity and the normalisation constants the experiment exports, so what is timed is the deployed operation.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 5
+  },
+  "matrix": [
+    {
+      "route": "cpu_recon",
+      "experiments": [
+        "irbeam_64_unet_cch_1pct_8_16",
+        "irbeam_64_unet_cch_2pct_8_16",
+        "irbeam_64_unet_cch_4pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_scatter_8_16",
+        "irbeam_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16"
+      ],
+      "threads": [
+        4
+      ],
+      "norm": [
+        "dataset"
+      ]
+    }
+  ]
+}

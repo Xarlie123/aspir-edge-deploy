@@ -1,0 +1,52 @@
+{
+  "name": "e1_quality_grid_jetson",
+  "description": "E1.3 on the Orin - GPU quality across the grid, one repetition. Uses int8_nofp16, not the default int8: TensorRT's tactic selection for a calibrated INT8 engine with FP16 also enabled is not reproducible \u2014 the same ONNX and the same flags produced engines with 0 %, 25 % and 48 % of their layers in INT8 depending on GPU state at build time. With FP16 off the builder has no discretion left and the engine is deterministic, which is what a quality row across 14 grid points needs. The default mixed engine is characterised separately at the operating point.",
+  "defaults": {
+    "repetitions": 1,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 5,
+    "save_outputs": true,
+    "timing_frames": 0
+  },
+  "matrix": [
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "irbeam_64_unet_cch_1pct_8_16",
+        "irbeam_64_unet_cch_2pct_8_16",
+        "irbeam_64_unet_cch_4pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_16pct_8_16",
+        "celebA_64_unet_cch_1pct_8_16",
+        "celebA_64_unet_cch_2pct_8_16",
+        "celebA_64_unet_cch_4pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_scatter_8_16",
+        "irbeam_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16",
+        "celebA_64_unet_scatter_8_16",
+        "celebA_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8_nofp16"
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "threads": [
+        4
+      ]
+    }
+  ]
+}

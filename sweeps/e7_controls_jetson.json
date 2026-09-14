@@ -1,0 +1,102 @@
+{
+  "name": "e7_controls_jetson",
+  "description": "E7 - the controls the design asks for and the runs that were missing. CPU INT8 separates the accelerator's hardware gain from its data-width gain, and probes the A78AE/A53 asymmetry (the A78AE has asimddp, the A53 does not). Timing at the extremes of the sweep shows the FP16-over-INT8 result is not specific to one ratio. Energy runs archive their raw power series, which is what a power-trace figure needs. CPU FP32 predictions are saved for the qualitative strip.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 15
+  },
+  "matrix": [
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8"
+      ],
+      "threads": [
+        4
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "int8"
+      ],
+      "threads": [
+        4
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "threads": [
+        4
+      ],
+      "save_outputs": true,
+      "repetitions": 1
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "irbeam_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_cch_1pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "fp16",
+        "int8_nofp16",
+        "fp32"
+      ],
+      "repetitions": 1
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "fp16"
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "threads": [
+        4
+      ],
+      "dwell_s": 30
+    }
+  ]
+}

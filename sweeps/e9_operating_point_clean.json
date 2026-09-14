@@ -1,0 +1,125 @@
+{
+  "name": "e9_operating_point_clean",
+  "description": "E9 - the paper's headline table, re-measured from a clean working tree so that every value is traceable to code and not merely to a commit. The earlier runs are numerically sound but were taken from a dirty tree, and that is what let one SHA describe two different engine builders. Engines are rebuilt from scratch and verified before they are allowed to produce numbers. Protocol unchanged in every other respect: clocks pinned at 40 W, unrecorded thermal warm-up, same idle and load durations, 10,000-frame latency passes, R=3.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 15
+  },
+  "matrix": [
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "fp16",
+        "fp32",
+        "int8_strict",
+        "int8"
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "fp32"
+      ],
+      "threads": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8"
+      ],
+      "threads": [
+        4
+      ]
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "fp16",
+        "int8_strict",
+        "int8"
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "fp32"
+      ],
+      "threads": [
+        4
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "int8"
+      ],
+      "threads": [
+        4
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "irbeam_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_cch_1pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8_strict"
+      ]
+    }
+  ]
+}

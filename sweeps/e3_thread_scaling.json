@@ -1,0 +1,51 @@
+{
+  "name": "e3_thread_scaling",
+  "description": "E3 - the CPU baseline at its best: thread scaling at the operating point, latency and energy, with the DPU as the reference point.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 15
+  },
+  "matrix": [
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "threads": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "threads": [
+        1,
+        2,
+        4
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "dpu_int8",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ]
+    }
+  ]
+}

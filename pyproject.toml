@@ -1,0 +1,30 @@
+[project]
+name = "aspir-edge-deploy"
+version = "1.0.0"
+description = "Deployment and measurement code for quantised U-Net denoising in single-pixel imaging on the Ultra96-V2 DPU and the Jetson Orin NX."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+authors = [
+  { name = "Carlos Chabert-Ull" },
+  { name = "Heberley Tobón-Maya" },
+  { name = "Samuel I. Zapata-Valencia" },
+  { name = "Enrique Tajahuerce" },
+  { name = "Germán León" },
+]
+# Exact versions per platform are pinned in envs/*/requirements.txt.
+dependencies = [
+  "numpy",
+  "scikit-image",
+]
+
+[project.optional-dependencies]
+board-cpu = ["onnxruntime", "onnx"]
+figures = ["matplotlib", "scipy"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aspir_unet"]

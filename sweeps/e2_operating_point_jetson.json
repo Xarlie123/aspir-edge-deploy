@@ -1,0 +1,73 @@
+{
+  "name": "e2_operating_point_jetson",
+  "description": "E2 on the Orin - latency, tails, throughput and energy at the operating point, R=3, plus the precision study. int8 is what a practitioner gets by default (TensorRT mixes in FP16 where its kernels are faster); int8_nofp16 is the honest head-to-head against a DPU that has no float path at all; fp16 is what one would actually deploy for a network this small; fp32 is the sanity check against the 2025 study.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 15
+  },
+  "matrix": [
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8",
+        "int8_nofp16",
+        "fp16",
+        "fp32"
+      ]
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "int8",
+        "int8_nofp16",
+        "fp16"
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "threads": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "threads": [
+        4
+      ],
+      "dwell_s": 30
+    }
+  ]
+}

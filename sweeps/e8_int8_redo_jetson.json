@@ -1,0 +1,68 @@
+{
+  "name": "e8_int8_redo_jetson",
+  "description": "E8 - every INT8 measurement redone on engines whose composition is pinned per layer and rebuilt from scratch. The earlier INT8 rows are not comparable with each other: TensorRT's tactic selection assigned a different precision mix to each engine, so 'INT8' named a different thing at every grid point, and the layer totals themselves vary (19 to 30 for one network) because fusion follows the precision assignment. Quality over the grid with one repetition; a real 10,000-frame latency pass and energy at the operating point with R=3, which the quality sweep never provided for this variant.",
+  "defaults": {
+    "repetitions": 1,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 5
+  },
+  "matrix": [
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "celebA_64_unet_cch_16pct_8_16",
+        "celebA_64_unet_cch_1pct_8_16",
+        "celebA_64_unet_cch_2pct_8_16",
+        "celebA_64_unet_cch_4pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_scatter_8_16",
+        "celebA_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16",
+        "irbeam_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_cch_1pct_8_16",
+        "irbeam_64_unet_cch_2pct_8_16",
+        "irbeam_64_unet_cch_4pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_scatter_8_16",
+        "irbeam_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8_strict"
+      ],
+      "timing_frames": 0,
+      "save_outputs": true
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8_strict"
+      ],
+      "repetitions": 3
+    },
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "celebA_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "precisions": [
+        "int8_strict"
+      ],
+      "repetitions": 3,
+      "dwell_s": 30
+    }
+  ]
+}

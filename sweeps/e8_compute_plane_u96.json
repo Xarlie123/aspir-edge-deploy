@@ -1,0 +1,35 @@
+{
+  "name": "e8_compute_plane_u96",
+  "description": "E8 - the operating point re-measured with both PMICs instrumented. Until now the sampler labelled every rail with the hwmon name, which is 'irps5401' on both controllers, so ten rails collapsed into five and the survivor was the processing-system PMIC at 0x14. VCCINT -- the PL core, where the DPU actually draws -- was never read. Rails are now irps5401_pl.* (0x13, sheet 15) and irps5401_ps.* (0x14, sheet 16), roles taken from the schematic rather than inferred from the response. Tagged dual_pmic so these runs never share a median with the board-input-only ones. Three configurations, R=3: the DPU, the CPU baseline, and the CPU with the bitstream loaded but idle. With both boards instrumented per compute domain the cross-device comparison becomes VCCINT + VCC_PSINTFP against the Orin's VDD_CPU_GPU_CV.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 20,
+    "tag": "dual_pmic"
+  },
+  "matrix": [
+    {
+      "route": "dpu_int8",
+      "experiments": ["irbeam_64_unet_cch_8pct_8_16"],
+      "modes": ["energy"],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": ["irbeam_64_unet_cch_8pct_8_16"],
+      "modes": ["energy"],
+      "threads": [4],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": ["irbeam_64_unet_cch_8pct_8_16"],
+      "modes": ["energy"],
+      "threads": [4],
+      "no_unload_pl": true,
+      "tag": "dual_pmic_pl_loaded",
+      "dwell_s": 30
+    }
+  ]
+}

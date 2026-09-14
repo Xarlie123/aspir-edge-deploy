@@ -1,0 +1,61 @@
+{
+  "name": "e1_quality_grid",
+  "description": "E1.3 - quality over the frozen grid on the Ultra96: both datasets, five sampling ratios on cake-cutting plus two extra pattern families at the operating point. One repetition: with fixed weights and fixed inputs the output is deterministic, so only timing and energy need repeats. The timing pass is skipped here; E2 owns latency.",
+  "defaults": {
+    "repetitions": 1,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 5,
+    "save_outputs": true,
+    "timing_frames": 0
+  },
+  "matrix": [
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_1pct_8_16",
+        "irbeam_64_unet_cch_2pct_8_16",
+        "irbeam_64_unet_cch_4pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_16pct_8_16",
+        "celebA_64_unet_cch_1pct_8_16",
+        "celebA_64_unet_cch_2pct_8_16",
+        "celebA_64_unet_cch_4pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_scatter_8_16",
+        "irbeam_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16",
+        "celebA_64_unet_scatter_8_16",
+        "celebA_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "threads": [
+        4
+      ]
+    },
+    {
+      "route": "dpu_int8",
+      "experiments": [
+        "irbeam_64_unet_cch_1pct_8_16",
+        "irbeam_64_unet_cch_2pct_8_16",
+        "irbeam_64_unet_cch_4pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_cch_16pct_8_16",
+        "celebA_64_unet_cch_1pct_8_16",
+        "celebA_64_unet_cch_2pct_8_16",
+        "celebA_64_unet_cch_4pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_scatter_8_16",
+        "irbeam_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16",
+        "celebA_64_unet_scatter_8_16",
+        "celebA_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16"
+      ],
+      "modes": [
+        "latency"
+      ]
+    }
+  ]
+}

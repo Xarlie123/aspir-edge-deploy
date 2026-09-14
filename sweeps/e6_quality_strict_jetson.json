@@ -1,0 +1,39 @@
+{
+  "name": "e6_quality_strict_jetson",
+  "description": "E6 - the GPU quality sweep rebuilt on int8_strict, whose INT8 composition is pinned per layer. The int8_nofp16 sweep could not be compared across grid points: its INT8 fraction varied from 29 % to 96 % between engines, and fidelity tracks that fraction (r = -0.72), so the axis mixed sampling ratio with engine composition. One repetition: output is deterministic.",
+  "defaults": {
+    "repetitions": 1,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 5,
+    "save_outputs": true,
+    "timing_frames": 0
+  },
+  "matrix": [
+    {
+      "route": "gpu_trt",
+      "experiments": [
+        "celebA_64_unet_cch_16pct_8_16",
+        "celebA_64_unet_cch_1pct_8_16",
+        "celebA_64_unet_cch_2pct_8_16",
+        "celebA_64_unet_cch_4pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_scatter_8_16",
+        "celebA_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16",
+        "irbeam_64_unet_cch_16pct_8_16",
+        "irbeam_64_unet_cch_1pct_8_16",
+        "irbeam_64_unet_cch_2pct_8_16",
+        "irbeam_64_unet_cch_4pct_8_16",
+        "irbeam_64_unet_cch_8pct_8_16",
+        "irbeam_64_unet_scatter_8_16",
+        "irbeam_64_unet_sweep_4degrees_2_bar_width_1_stride_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "precisions": [
+        "int8_strict"
+      ]
+    }
+  ]
+}

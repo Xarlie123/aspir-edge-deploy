@@ -1,0 +1,46 @@
+{
+  "name": "e7_controls_u96",
+  "description": "E7 - the two controls the Ultra96 half needs. (1) CPU INT8 separates the accelerator's data-width gain from its architectural gain, and tests a concrete prediction: the A53 is ARMv8.0 and has no integer dot-product instruction (asimddp), which the Orin's A78AE does have, so INT8 should pay on the Jetson and not here. Same 200 calibration frames as the DPU quantiser, so any difference is the scheme and not the data. (2) CPU FP32 with the bitstream left loaded measures what an idle DPU costs on the board-input rail - the plane the Ultra96 reports includes the PL, and every other CPU run unloads it, so without this row the paper cannot say whether the accelerator's energy advantage is net of its own static cost. Pairs run-for-run against e2_operating_point.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 15
+  },
+  "matrix": [
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": ["latency"],
+      "precisions": ["int8"],
+      "threads": [4],
+      "save_outputs": true
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": ["energy"],
+      "precisions": ["int8"],
+      "threads": [4],
+      "dwell_s": 30
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": ["energy"],
+      "threads": [4],
+      "no_unload_pl": true,
+      "dwell_s": 30,
+      "tag": "pl_loaded"
+    }
+  ]
+}

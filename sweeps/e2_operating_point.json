@@ -1,0 +1,60 @@
+{
+  "name": "e2_operating_point",
+  "description": "E2 on the Ultra96 - latency (10,000-frame pass), tail quantiles, sustained throughput and energy at the operating point, R=3.",
+  "defaults": {
+    "repetitions": 3,
+    "warmup": 20,
+    "limit": 0,
+    "dwell_s": 15
+  },
+  "matrix": [
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ],
+      "threads": [
+        4
+      ]
+    },
+    {
+      "route": "dpu_int8",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "latency"
+      ]
+    },
+    {
+      "route": "cpu_neon",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "threads": [
+        4
+      ],
+      "dwell_s": 30
+    },
+    {
+      "route": "dpu_int8",
+      "experiments": [
+        "irbeam_64_unet_cch_8pct_8_16",
+        "celebA_64_unet_cch_8pct_8_16"
+      ],
+      "modes": [
+        "energy"
+      ],
+      "dwell_s": 30
+    }
+  ]
+}
