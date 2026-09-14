@@ -1,0 +1,21 @@
+{
+  "produced_by": "quantize_dpu_int8.py",
+  "torch": "1.12.1",
+  "python": "3.7.12",
+  "vitis_ai_image": "xilinx/vitis-ai-pytorch-cpu:ubuntu2004-3.0.0.106",
+  "architecture": "UNet",
+  "calibration_frames": 200,
+  "artifacts": {
+    "checkpoint": {
+      "path": "irbeam_64_unet_cch_4pct_8_16.pt",
+      "sha256": "0a4485360e707965b213353bab4cf4e8426b7eb779796b4834a524620500ef63",
+      "bytes": 154958
+    },
+    "calibration": {
+      "path": "calibration_images.npz",
+      "sha256": "be3dd6eaa084abc403583002ded0610b34f3fbad4751cf1466a3fc05666c316c",
+      "bytes": 5859134
+    }
+  },
+  "vai_q_pytorch": "3.0.0+a44284e+torch1.12.1"
+}

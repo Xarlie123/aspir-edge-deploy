@@ -1,0 +1,8 @@
+{
+    "lib": "libvart-dpu-runner.so",
+    "filename": "irbeam_64_unet_scatter_8_16_b512_u96v2.xmodel",
+    "kernel": [
+        "subgraph_UNet__UNet_Conv2d_final_conv__1742"
+    ],
+    "target": "DPUCZDX8G_ISA1_B512_0101000056010400"
+}
