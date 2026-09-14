@@ -1,0 +1,9 @@
+# NVIDIA Jetson Orin NX, JetPack 6.2 (L4T R36.4.3, Ubuntu 22.04.5, kernel
+# 5.15.148-tegra), Python 3.10.12. TensorRT 10.3.0 is the JetPack system
+# package. Versions as recorded in the run reports.
+numpy==1.26.4
+onnxruntime==1.17.3
+scikit-image==0.25.2
+# Also required, versions not recorded by the runs:
+#   cuda-python   (CUDA binding used by aspir_unet.inference.trt; pycuda also works)
+#   onnx          (scripts/quantize_cpu_int8.py only)

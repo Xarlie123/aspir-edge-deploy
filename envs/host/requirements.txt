@@ -1,0 +1,6 @@
+# Host workstation: aggregation (scripts/aggregate_results.py) and the figure
+# pipeline (figures/). Python 3.12.3, Ubuntu 24.04.
+numpy==2.4.4
+scipy==1.17.1
+matplotlib==3.10.9
+scikit-image==0.26.0

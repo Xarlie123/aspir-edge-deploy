@@ -1,0 +1,7 @@
+/*
+ * User device-tree overlay — intentionally empty. Avoids the
+ * /include/ "system-conf.dtsi" reference because PetaLinux 2022.2 +
+ * Avnet u96v2 BSP does not auto-generate system-conf.dtsi via dtgen
+ * for the bare petalinux-config --get-hw-description path. The BSP DT
+ * already covers PSU/DDR/peripherals; we add nothing custom here.
+ */

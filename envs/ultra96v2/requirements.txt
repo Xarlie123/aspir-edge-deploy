@@ -1,0 +1,8 @@
+# Avnet Ultra96-V2, PetaLinux 2022.2 (kernel 5.15.36-xilinx-v2022.2), Python 3.9.9.
+# vart 3.0.0 and xir come from the PetaLinux image (envs/ultra96v2/petalinux/).
+# Versions as recorded in every run report of the campaign.
+numpy==1.26.4
+onnxruntime==1.17.3
+scikit-image==0.24.0
+# Needed only by scripts/quantize_cpu_int8.py, which runs on the board.
+onnx==1.17.0

@@ -1,0 +1,20 @@
+/*
+ * Route C — minimal system-conf.dtsi.
+ *
+ * PetaLinux 2022.2 + Avnet u96v2 BSP does not auto-generate
+ * system-conf.dtsi for the petalinux-config --get-hw-description path,
+ * yet meta-avnet's system-bsp.dtsi hard-requires it (/include/ line 1).
+ * We provide it via the meta-user device-tree.bbappend SRC_URI so it is
+ * durable across do_configure regenerations.
+ *
+ * Content is intentionally minimal: the effective bootargs come from
+ * system-bsp.dtsi (which redefines chosen/bootargs with cma=512M after
+ * including this file), and memory/aliases come from system-top.dts.
+ */
+
+/ {
+	chosen {
+		bootargs = "earlycon console=ttyPS0,115200 clk_ignore_unused root=/dev/mmcblk0p2 rw rootwait";
+		stdout-path = "serial0:115200n8";
+	};
+};
