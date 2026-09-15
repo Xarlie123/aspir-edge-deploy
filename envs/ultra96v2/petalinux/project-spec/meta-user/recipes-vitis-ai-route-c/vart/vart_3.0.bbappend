@@ -10,7 +10,7 @@
 # way to talk to a DPU instantiated directly in the Vivado BD at
 # 0x8F000000 — the v++ flow (which works on top of an xclbin) does
 # not produce a functional DPU on this XCZU3EG + DPUCZDX8G v4.1.0 combo
-# (see project_dpu_fingerprint_clk_dsp_ce.md for the diagnosis).
+# (its fingerprint register never latches the configured value).
 #
 # Keep this bbappend isolated from the symlinked Vitis-AI submodule
 # recipes-vitis-ai/ tree so the submodule stays clean for git.

@@ -60,7 +60,7 @@ Avnet's Ultra96-V2 PetaLinux 2022.2 BSP. In outline:
 petalinux-create -t project -s <Avnet Ultra96-V2 2022.2 BSP> -n ultra96v2
 cp -r envs/ultra96v2/petalinux/project-spec/* ultra96v2/project-spec/
 cd ultra96v2
-petalinux-config --get-hw-description <path>/hardware/dpu_overlay/top_wrapper.xsa
+petalinux-config --get-hw-description <path>/hardware/dpu_overlay/u96v2_sbc_base_wrapper.xsa
 petalinux-build
 petalinux-package --boot --u-boot --force
 ```

@@ -45,14 +45,14 @@ tables and figures.
 | Accelerator runtime | VART 3.0.0, vivado-flow (`/dev/dpu`) | TensorRT 10.3.0, cuda-python | — |
 | CPU runtime | ONNX Runtime 1.17.3 | ONNX Runtime 1.17.3 | — |
 | INT8 toolchain | Vitis AI 3.0 container on the host: `vai_q_pytorch` 3.0.0+a44284e, PyTorch 1.12.1, Python 3.7.12 | TensorRT calibration on the board | — |
+| Hardware tools | Vivado 2022.2 | — | — |
 | Power telemetry | PMBus: IR38060 (board input), two IRPS5401 (PL and PS rails) | INA3221: `VDD_IN`, `VDD_CPU_GPU_CV`, `VDD_SOC` | — |
 
 The networks were trained with ASPIR v1.2.1 on PyTorch 2.6.0 (CUDA 12.4); the
 PyTorch that quantises for the DPU is therefore not the one that trained the
 model, and the quality of the FP32 reference computed under 2.6.0 (41.505 dB)
 and measured on the board under ONNX Runtime (41.534 dB) agree to 0.03 dB.
-Exact package pins are in `envs/`. The tracked bitstream reports Vivado 2024.1
-against a PetaLinux 2022.2 image; see `hardware/dpu_overlay/README.md`.
+Exact package pins are in `envs/`.
 
 ## Setting up
 

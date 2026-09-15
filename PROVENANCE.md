@@ -9,7 +9,7 @@ adapted to the layout here; logic was changed only where listed below.
 |---|---|---|
 | `src/aspir_unet/`, `scripts/`, `sweeps/` | Implementation repository, `app/` | `b95a1da5ef40`, clean tree |
 | `models/*/phase_c_dpu/` | Implementation repository, `app/models/`: xmodels, fixed points and logs of the campaign build of 2026-08-24; quantiser provenance files added in `12354dc` and `40647c1` | `b95a1da5ef40` |
-| `hardware/dpu_overlay/` | Implementation repository, `workspace/hw/phase_c_dpu_vivado/` and `workspace/scripts/fetch-dpu-trd.sh`; bitstream and XSA of 2026-05-10 | `b95a1da5ef40` |
+| `hardware/dpu_overlay/` | Implementation repository: block design, regeneration script, constraints, `arch.json` and `fetch-dpu-trd.sh` from `workspace/hw/phase_c_dpu_vivado/` and `workspace/scripts/`; the XSA and reports from the Vivado 2022.2 project `workspace/projects/ultra96v2/hardware/u96v2_sbc_base_2022_2/` (run `impl_2`, 2026-05-14); `firmware/` from the PetaLinux 2022.2 image's root filesystem | `b95a1da5ef40`; the XSA, reports and image are untracked build products of that tree |
 | `envs/ultra96v2/petalinux/` | Implementation repository, PetaLinux project `project-spec/meta-user/` and `project-spec/configs/` | `b95a1da5ef40` |
 | `figures/` | Manuscript repository, `figures/scripts/` | `68e0a02`, unchanged at `4f600d5` |
 | `src/aspir_unet/model/unet.py`, `unet_res.py` | Byte-identical to ASPIR v1.2.1 | ASPIR `08f773c76f70` |
@@ -28,6 +28,13 @@ adapted to the layout here; logic was changed only where listed below.
   records the repository name instead of the absolute host path.
 - `scripts/install-board-deps.sh`: also installs onnx 1.17.0, which the campaign
   installed by hand.
+- `hardware/dpu_overlay/regenerate_project.tcl` uses the measured build's
+  implementation strategy, Vivado's default, instead of
+  `Performance_ExplorePostRoutePhysOpt`, and exports
+  `u96v2_sbc_base_wrapper_regen.xsa`. The host name in the Vivado reports was
+  rewritten.
+- A comment in `vart_3.0.bbappend` pointed to a private note; it now states the
+  finding itself.
 - `hardware/dpu_overlay/gen_dpu_overlay.sh` requires `XILINX_DIR`;
   `fetch-dpu-trd.sh` no longer carries a placeholder archive hash that could
   never match.
@@ -39,6 +46,17 @@ adapted to the layout here; logic was changed only where listed below.
   training mirrors; a comment about mirroring ASPIR was removed from `unet.py`,
   which makes the file byte-identical to ASPIR's.
 - Code the article does not use was left out.
+
+## The bitstream that was measured
+
+The Ultra96-V2 ran the Vivado 2022.2 build of 2026-05-14, identified by
+content: the published XSA is byte-identical to the one the PetaLinux project
+imported, and the firmware file in the image carries that XSA's bitstream byte
+for byte after a 10,240-byte header.
+
+The implementation repository also tracks an older `top_wrapper.xsa` and
+`top_wrapper.bit` (Vivado 2024.1, 2026-05-10), from before the move to the
+2022.2 toolchain. No measurement used them, and they are not published here.
 
 ## Code that produced the published measurements
 

@@ -25,8 +25,7 @@
 #   vivado -mode batch -source hardware/dpu_overlay/regenerate_project.tcl
 #
 #   # 2. Same plus run synth+impl+bitstream+XSA export (~60–90 min on a
-#   #    decent host). Hands you back a top_wrapper.xsa identical (modulo
-#   #    timing-driven seed variation) to the one currently tracked.
+#   #    decent host). Hands you back a u96v2_sbc_base_wrapper.xsa equivalent in function, though not in bits, to the one tracked here.
 #   vivado -mode batch -source hardware/dpu_overlay/regenerate_project.tcl \
 #       -tclargs --build
 #
@@ -121,11 +120,11 @@ update_compile_order -fileset sources_1
 import_files -fileset constrs_1 -force -norecurse $_xdc_file
 
 # ---------------------------------------------------------------------------
-# Implementation strategy: Performance_ExplorePostRoutePhysOpt is the only
-# one that closes B512 @300 MHz timing on the XCZU3EG (see memory note
-# project_dpu_timing_strategy.md).
-# ---------------------------------------------------------------------------
-set_property strategy Performance_ExplorePostRoutePhysOpt [get_runs impl_1]
+# Implementation strategy: the measured bitstream was implemented with
+# Vivado's default strategy (run impl_2 of the original project, Vivado
+# 2022.2, WNS +0.189 ns). If a rebuild misses timing, try
+# Performance_ExplorePostRoutePhysOpt.
+set_property strategy "Vivado Implementation Defaults" [get_runs impl_1]
 
 if {!$_run_synth} {
     puts ""
@@ -150,11 +149,11 @@ if {[get_property PROGRESS [get_runs impl_1]] ne "100%"} {
     error "impl_1 failed — inspect $_target_dir/${_proj_name}.runs/impl_1/runme.log"
 }
 
-# Export the hardware platform alongside the existing top_wrapper.xsa so the
+# Export the hardware platform alongside the existing u96v2_sbc_base_wrapper.xsa so the
 # user can diff sizes or hash them. Identical-modulo-seeds to the tracked one.
-set _xsa_out "${_script_dir}/top_wrapper_regen.xsa"
+set _xsa_out "${_script_dir}/u96v2_sbc_base_wrapper_regen.xsa"
 write_hw_platform -fixed -include_bit -force $_xsa_out
 puts ""
 puts "regenerate_project: bitstream + XSA generated."
 puts "regenerate_project: XSA at $_xsa_out"
-puts "regenerate_project: compare against the tracked hardware/dpu_overlay/top_wrapper.xsa"
+puts "regenerate_project: compare against the tracked hardware/dpu_overlay/u96v2_sbc_base_wrapper.xsa"
