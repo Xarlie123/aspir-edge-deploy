@@ -18,7 +18,7 @@ tables and figures.
 
 | Companion | Contents | Licence |
 |---|---|---|
-| **aspir-edge-data** | Datasets, checkpoints, ONNX exports, sensing masks, reconstructions, model outputs and every measurement report | CC BY 4.0 |
+| **aspir-edge-data v1.0.0**, [doi:10.5281/zenodo.22761771](https://doi.org/10.5281/zenodo.22761771), [GitHub](https://github.com/Xarlie123/aspir-edge-data) | Datasets, checkpoints, ONNX exports, sensing masks, reconstructions, model outputs and every measurement report | CC BY 4.0 |
 | **ASPIR v1.2.1**, [doi:10.5281/zenodo.19864089](https://doi.org/10.5281/zenodo.19864089) | The simulator that generated the datasets and trained the networks | Apache-2.0 |
 
 ## Contents
@@ -216,3 +216,5 @@ trusting a report's own total (see `PROVENANCE.md`). Figures and tables:
 
 Apache License 2.0 (`LICENSE`). `hardware/dpu_overlay/constraints/u96v2_sbc_base.xdc`
 derives from Avnet's Ultra96-V2 base design. Citation metadata: `CITATION.cff`.
+
+Version 1.0.0 is archived on Zenodo as [doi:10.5281/zenodo.22761898](https://doi.org/10.5281/zenodo.22761898).

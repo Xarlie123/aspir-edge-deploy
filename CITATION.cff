@@ -3,6 +3,8 @@ message: "If you use this software, please cite it and the article it accompanie
 type: software
 title: "aspir-edge-deploy: deployment and measurement code for quantised U-Net single-pixel imaging denoising on the Ultra96-V2 DPU and the Jetson Orin NX"
 version: 1.0.0
+doi: 10.5281/zenodo.22761898
+date-released: "2026-09-15"
 license: Apache-2.0
 repository-code: "https://github.com/Xarlie123/aspir-edge-deploy"
 abstract: >-
@@ -56,6 +58,22 @@ references:
     title: "ASPIR: A Single-Pixel Imaging Research Platform"
     version: 1.2.1
     doi: 10.5281/zenodo.19864089
+    authors:
+      - family-names: Chabert-Ull
+        given-names: Carlos
+      - family-names: Tobón-Maya
+        given-names: Heberley
+      - family-names: Zapata-Valencia
+        given-names: Samuel I.
+      - family-names: Tajahuerce
+        given-names: Enrique
+      - family-names: León
+        given-names: Germán
+  - type: data
+    title: "aspir-edge-data"
+    version: 1.0.0
+    doi: 10.5281/zenodo.22761771
+    repository: "https://github.com/Xarlie123/aspir-edge-data"
     authors:
       - family-names: Chabert-Ull
         given-names: Carlos
