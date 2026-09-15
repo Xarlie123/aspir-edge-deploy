@@ -5,6 +5,26 @@ title: "aspir-edge-deploy: deployment and measurement code for quantised U-Net s
 version: 1.0.0
 license: Apache-2.0
 repository-code: "https://github.com/Xarlie123/aspir-edge-deploy"
+abstract: >-
+  Single-pixel imaging forms an image with one detector, in an acquisition
+  time that grows with the number of projected patterns. Fewer patterns
+  shorten acquisition but degrade the reconstruction; a learned denoiser
+  recovers that quality at a fixed computational cost. The accompanying
+  article deploys a compact U-Net denoiser, in a simulated pipeline, on two
+  edge platforms, a Vitis AI DPU soft accelerator in the reconfigurable logic
+  of an Avnet Ultra96-V2 and TensorRT on the embedded GPU of an NVIDIA Jetson
+  Orin NX, and measures quality, quantisation fidelity, latency and energy per
+  frame over seven sensing configurations and two image classes, beams and
+  faces.
+
+  This repository holds the code behind that deployment and those
+  measurements: eight-bit quantisation and compilation for the DPU, with the
+  fourteen compiled models; the DPU overlay as measured (block design,
+  constraints, hardware export, bitstream and implementation reports);
+  TensorRT engine builds; the CPU, DPU and GPU runners with their power
+  sampling, and the sweep matrices; pinned environments for the host and both
+  boards; and the pipeline that regenerates the article's tables and figures
+  from the companion dataset, aspir-edge-data.
 authors:
   - family-names: Chabert-Ull
     given-names: Carlos
