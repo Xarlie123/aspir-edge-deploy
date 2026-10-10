@@ -160,7 +160,8 @@ What the runners and matrices encode:
   against ground truth and against the host FP32 output, with outputs clipped to
   [0, 1].
 - **Energy**: a 10 s idle phase and a 30 s phase of sustained inference, every
-  rail sampled throughout and the power series kept.
+  rail sampled throughout and the power series kept, together with the
+  completion time of every frame of the load phase.
 - **Isolation**: the CPU runner unloads the programmable logic before measuring,
   so the CPU baseline is not taken with the accelerator powered; the DPU runner
   reloads it.
@@ -187,6 +188,33 @@ The IRPS5401 `pin*` channels are the controllers' inputs. Controller roles are
 from the Avnet Ultra96-V2 schematic (sheets 15 and 16). Reports whose rails are
 named bare `irps5401.*` predate the two controllers being told apart and contain
 the PS controller only.
+
+### Uncertainty of the dynamic energy
+
+Energy reports carry an `energy_mode.uncertainty` block that follows the
+convention of ASPIR (`src/aspir_unet/measurement/uncertainty.py` holds the
+derivation).
+
+- The dynamic energy per frame is E_dyn = (P̄ − P_idle) · t̄, over 10 blocks of
+  the load phase. Both phases drop their first 2.5 s, as the figures do.
+- The idle term is σ_idle · t̄, with σ_idle the standard deviation of the 1 s
+  means of the idle phase (ASPIR polls its idle baseline at 1 Hz). It is not
+  the standard error; σ_idle/√n is stored as well.
+- The block term propagates the block-to-block spread of P and t to first
+  order.
+- The two are also combined, and a 95 % bootstrap interval is given.
+- A third term covers sensor resolution, Δ/√6 · t̄. It is decisive for
+  `ir38060.pout1`, which reads in 1.25 W steps (5.00 or 6.25 W), so the DPU's
+  dynamic power on the board-input plane equals one step. The IRPS5401 rails
+  resolve about 31 mW and the Jetson's INA3221 about 15 mW.
+
+The same fields can be recomputed from archived reports, which have the power
+series but no frame times; those use the sustained frame rate for every block:
+
+```bash
+python3 scripts/energy_uncertainty.py $ASPIR_EDGE_DATA/results/ultra96v2 $ASPIR_EDGE_DATA/results/jetson --out uncertainty.csv
+python3 tests/test_uncertainty.py
+```
 
 ### Aggregation and figures
 

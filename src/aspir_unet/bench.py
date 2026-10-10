@@ -28,6 +28,7 @@ from typing import Callable
 import numpy as np
 
 from .measurement.energy import EnergySampler, read_temperatures_once
+from .measurement.uncertainty import board_input_series, energy_uncertainty
 from .measurement.timing import TimingMeasurer
 
 
@@ -229,17 +230,36 @@ def measure_energy_mode(
         t0 = time.perf_counter()
         t_end = t0 + active_s
         count = 0
+        # Completion time of every frame, on the sampler's clock, so the
+        # load pass can be split into blocks afterwards (uncertainty below).
+        frame_ns = []
         while time.perf_counter() < t_end:
             run_one(frames[count % n:count % n + 1])
+            frame_ns.append(time.perf_counter_ns())
             count += 1
         elapsed = time.perf_counter() - t0
+    frame_t_s = (np.asarray(frame_ns, dtype=np.int64) - e_active._t_start_ns) / 1e9
     active = e_active.report()
     temps["after_active"] = read_temperatures_once()
+    active_series = e_active.series()
     if series_out is not None:
-        series_out["active"] = e_active.series()
+        series_out["active"] = dict(active_series, frame_t_s=frame_t_s)
 
     p_idle = idle.board_input_w_avg
     p_active = active.board_input_w_avg
+
+    # Dynamic energy with the uncertainty convention of ASPIR (settled
+    # segments, 1 Hz idle readings, 10 blocks); the fields above keep their
+    # meaning.
+    idle_series = e_idle.series()
+    idle_p = board_input_series(idle_series, idle.board_input_rails)
+    active_p = board_input_series(active_series, active.board_input_rails)
+    if idle_p is not None and active_p is not None:
+        uncertainty = energy_uncertainty(idle_series["t_s"], idle_p,
+                                         active_series["t_s"], active_p,
+                                         frame_t_s=frame_t_s)
+    else:
+        uncertainty = {"error": "no board-input rail sampled"}
     p_dyn = p_active - p_idle
     t_frame_s = elapsed / count if count else 0.0
     e_total_per_frame = p_active * t_frame_s
@@ -284,4 +304,5 @@ def measure_energy_mode(
             "energy_per_frame_j": round(e_total_per_frame, 6),
             "dynamic_energy_per_frame_j": round(e_dyn_per_frame, 6),
         },
+        "uncertainty": uncertainty,
     }
