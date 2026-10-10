@@ -89,21 +89,24 @@ def _load_masks(path: Path) -> np.ndarray:
 
 
 def _backprojection(phi_t: np.ndarray, measurement: np.ndarray,
-                    bipolar: bool, m_patterns: int) -> np.ndarray:
+                    bipolar: bool, divisor: int) -> np.ndarray:
     """The estimator the dataset pipeline actually uses, per pattern family.
 
     Bipolar (+/-1) patterns carry no DC term, so a plain back-projection
-    recovers the image: x = Phi^T y / M. Binary (0/1) patterns do carry one,
-    and it swamps the estimate unless the measurements are centred first —
-    which is the classical ghost-imaging correlation, x = Phi^T (y - mean(y)) / M.
+    recovers the image: x = Phi^T y / N, the pseudoinverse (ASPIR >= 1.3,
+    ``normalization.linear_divisor == "pixels"``), or Phi^T y / M as exported
+    by earlier versions; ``divisor`` is N or M accordingly. Binary (0/1)
+    patterns do carry one, and it swamps the estimate unless the measurements
+    are centred first — which is the classical ghost-imaging correlation,
+    x = Phi^T (y - mean(y)) / M.
 
     Verified against the shipped reconstructions at >130 dB for both families,
     so what is timed here is the deployed operation and not an approximation
     of it.
     """
     if bipolar:
-        return (phi_t @ measurement) / m_patterns
-    return (phi_t @ (measurement - measurement.mean())) / m_patterns
+        return (phi_t @ measurement) / divisor
+    return (phi_t @ (measurement - measurement.mean())) / divisor
 
 
 def _normalise01(arr: np.ndarray) -> np.ndarray:
@@ -187,9 +190,14 @@ def main() -> int:
     bipolar = str(cfg.get("mask_polarity", "")).lower() == "bipolar" \
         or float(phi.min()) < 0
     dataset_norm = cfg.get("normalization") or {}
+    # The (lo, span) constants were taken on ASPIR's linear output: since ASPIR
+    # 1.3 its Hadamard back-projection divides by the pixel count and the export
+    # says so; older exports divided by the number of patterns.
+    divisor = n_pixels if bipolar and dataset_norm.get("linear_divisor") == "pixels" \
+        else m_patterns
     print(f"[load] Phi = ({m_patterns}, {n_pixels})  "
           f"M/N = {100.0 * m_patterns / n_pixels:.2f}%  "
-          f"{'bipolar' if bipolar else 'binary'} patterns")
+          f"{'bipolar' if bipolar else 'binary'} patterns, back-projection / {divisor}")
     if args.norm == "dataset" and not dataset_norm:
         print("[recon] WARNING the experiment exports no normalisation "
               "constants; falling back to a probe-derived global scale")
@@ -227,7 +235,7 @@ def main() -> int:
         print(f"[recon] dataset normalisation: lo={g_lo:.4f} span={g_span:.4f}")
     elif args.norm == "global":
         probe = np.stack([_backprojection(phi_t, measurements[i], bipolar,
-                                          m_patterns)
+                                          divisor)
                           for i in range(min(n, 16))])
         g_lo, g_span = _global_scale(probe)
         print(f"[recon] global normalisation scale: lo={g_lo:.4f} "
@@ -242,7 +250,7 @@ def main() -> int:
     with energy, temp:
         for i in rec_timer.indices():
             t0 = rec_timer.tic()
-            raw = _backprojection(phi_t, measurements[i], bipolar, m_patterns)
+            raw = _backprojection(phi_t, measurements[i], bipolar, divisor)
             if args.norm in ("dataset", "global"):
                 recon[i] = (raw - g_lo) / g_span
             elif args.norm == "per-frame":
@@ -350,7 +358,7 @@ def main() -> int:
         def reconstruct_one(frame_batch):
             i = int(reconstruct_one.index % n)
             reconstruct_one.index += 1
-            raw = _backprojection(phi_t, measurements[i], bipolar, m_patterns)
+            raw = _backprojection(phi_t, measurements[i], bipolar, divisor)
             if args.norm in ("dataset", "global"):
                 return (raw - g_lo) / g_span
             if args.norm == "per-frame":
